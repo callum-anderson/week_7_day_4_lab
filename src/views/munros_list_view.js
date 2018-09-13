@@ -6,22 +6,27 @@ const MunrosListView = function(element){
 }
 
 MunrosListView.prototype.bindEvents = function () {
-  PubSub.subscribe('Munros:all-munros', (event) => {
-    this.render(event.detail);
-  })
+
+  PubSub.subscribe('Munros:all-munros', (e) => {
+    this.render(e.detail);
+  });
+  PubSub.subscribe('Munros:selected-munro', (e) => {
+    this.render(e.detail);
+  });
 };
 
 MunrosListView.prototype.render = function (data) {
-  const munroList = data.map(munro => {return {
-    name: munro.name,
-    meaning: munro.meaning,
-    height: munro.height
-  }});
-
-  munroList.forEach((munro) => {
-    const munroView = new MunroView(this.element, munro);
+  if (data.length>1) {
+    const listviewDiv = document.createElement('div');
+    listviewDiv.classList.add('listview-div');
+    this.element.appendChild(listviewDiv);
+  };
+  listviewDiv = document.querySelector('.listview-div');
+  listviewDiv.innerHTML = "";
+  data.forEach((munro) => {
+    const munroView = new MunroView(listviewDiv, munro);
     munroView.render();
-  })
+  });
 };
 
 module.exports = MunrosListView;
