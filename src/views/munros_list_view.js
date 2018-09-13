@@ -24,5 +24,4 @@ MunrosListView.prototype.render = function (data) {
   })
 };
 
-
 module.exports = MunrosListView;

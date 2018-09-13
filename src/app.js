@@ -4,7 +4,7 @@ const MunrosListView = require('./views/munros_list_view.js')
 
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('body');
-  const munrosListView = new MunrosListView();
+  const munrosListView = new MunrosListView(container);
   munrosListView.bindEvents();
 
   const munros = new Munros();
