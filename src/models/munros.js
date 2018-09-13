@@ -6,11 +6,9 @@ const Munros = function(){
 }
 
 Munros.prototype.getData = function () {
-
   const request = new RequestHelper('https://munroapi.herokuapp.com/api/munros');
   request.get()
     .then((data) => { // if successfull
-      console.log(data)
       this.data = data;
       PubSub.publish('Munros:all-munros', this.data);
     })
