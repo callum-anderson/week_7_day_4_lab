@@ -6,11 +6,21 @@ const Munros = function(){
 }
 
 Munros.prototype.getData = function () {
-  const requestHelper = new RequestHelper('https://munroapi.herokuapp.com/api/munros');
-  const request = requestHelper.get((data) => {
-    this.data = data;
-  });
 
+  const request = new RequestHelper('https://munroapi.herokuapp.com/api/munros');
+  request.get()
+    .then((data) => { // if successfull
+      console.log(data)
+      this.data = data;
+      PubSub.publish('Munros:all-munros', this.data);
+    })
+    .catch((err) => { // on error
+      console.error(err)
+    });
+};
+
+Munros.prototype.bindEvents = function () {
+  this.getData();
 };
 
 module.exports = Munros;
