@@ -12,9 +12,20 @@ Munros.prototype.getData = function () {
       this.data = data.map(munro => {return {
         name: munro.name,
         meaning: munro.meaning,
-        height: munro.height
+        height: munro.height,
+        region: munro.region
       }});
       PubSub.publish('Munros:all-munros', this.data);
+      const filteredByRegion = this.data
+        .map(munro => munro.region)
+          .reduce((acc, current, index, array) => {
+            if (array.indexOf(current) === index) {
+              acc.push(current);
+            }
+            return acc
+          }, []);
+      this.regions = filteredByRegion;
+      PubSub.publish('Munros:regions', filteredByRegion);
     })
     .catch((err) => {
       console.error(err)
@@ -24,8 +35,11 @@ Munros.prototype.getData = function () {
 Munros.prototype.bindEvents = function () {
   this.getData();
   PubSub.subscribe('Munros:selected-change', (event) => {
-    const filteredMunro = this.data.filter((munro) => munro.name === event.detail);
-    PubSub.publish('Munros:selected-munro', filteredMunro);
+    let dataSend = this.data.filter((munro) => munro.region === event.detail);
+    if (event.detail==="Show All") {
+      dataSend = this.data;
+    }
+    PubSub.publish('Munros:selected-munro', dataSend);
   });
 };
 

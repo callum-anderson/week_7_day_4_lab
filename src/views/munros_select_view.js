@@ -11,25 +11,29 @@ MunrosSelectView.prototype.bindEvents = function () {
   selector.classList.add('munro-filter');
   this.container.appendChild(selector);
 
-  PubSub.subscribe('Munros:all-munros', (e) => {
+  PubSub.subscribe('Munros:regions', (e) => {
     this.populate(e.detail);
   });
 
   selector.addEventListener('change', (e) => {
     PubSub.publish('Munros:selected-change', e.target.value);
-  })
+  });
 
 };
 
 MunrosSelectView.prototype.populate = function (data) {
   const selector = document.querySelector('.munro-filter');
-  data.forEach((munro) => {
-    const option = document.createElement('option');
-    option.index = data.indexOf(munro);
-    option.textContent = munro.name;
-    option.value = munro.name;
-    selector.appendChild(option);
-  });
+  createHTML('option', 0, 'Show All', selector);
+  for (i = 0; i<data.length; i++) {
+    createHTML('option', i+1, data[i], selector);
+  };
 };
+
+function createHTML(element, index, text, parent) {
+  const option = document.createElement(element);
+  option.value = text;
+  option.textContent = text;
+  parent.appendChild(option);
+}
 
 module.exports = MunrosSelectView;

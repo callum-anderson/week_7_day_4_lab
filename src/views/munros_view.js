@@ -13,15 +13,15 @@ MunrosView.prototype.render = function () {
 
   const infoList = document.createElement('ul');
   const height = document.createElement('li');
-  height.textContent = this.munro.height;
+  const region = document.createElement('li');
+  const meaning = document.createElement('li');
+  height.textContent = 'Height: ' + this.munro.height;
+  region.textContent = 'Region: ' + this.munro.region;
+  meaning.textContent = 'Meaning: ' + this.munro.meaning;
   infoList.appendChild(height);
-
-  const meaning = document.createElement('li')
-  meaning.textContent = this.munro.meaning;
+  infoList.appendChild(region);
   infoList.appendChild(meaning);
-
   container.appendChild(infoList);
-
   this.element.appendChild(container);
 };
 
